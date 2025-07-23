@@ -1,0 +1,7 @@
+fastmcp
+langchain-chroma
+langchain-huggingface
+langchain-text-splitters
+langchain-community
+sentence-transformers
+chromadb

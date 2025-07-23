@@ -1,0 +1,203 @@
+Abstract
+
+Background
+
+Autism spectrum disorder (ASD) is currently diagnosed using qualitative methods that measure between
+20-100 behaviors, can span multiple appointments with trained clinicians, and take several hours to
+complete. In our previous work, we demonstrated the efficacy of machine learning classifiers to accelerate
+the process by collecting home videos of US-based children, identifying a reduced subset of behavioral
+features that are scored by untrained raters using a machine learning classifier to determine children’s “risk
+scores” for autism. We achieved an accuracy of 92% (95% CI 88%-97%) on US videos using a classifier
+built on five features.
+
+Objective
+
+11/8/21, 9:03 PM Detecting Developmental Delay and Autism Through Machine Learning Models Using Home Videos of Bangladeshi Children:...
+
+Using videos of Bangladeshi children collected from Dhaka Shishu Children’s Hospital, we aim to scale
+our pipeline to another culture and other developmental delays, including speech and language conditions.
+
+Methods
+
+Although our previously published and validated pipeline and set of classifiers perform reasonably well on
+Bangladeshi videos (75% accuracy, 95% CI 71%-78%), this work improves on that accuracy through the
+development and application of a powerful new technique for adaptive aggregation of crowdsourced
+labels. We enhance both the utility and performance of our model by building two classification layers:
+The first layer distinguishes between typical and atypical behavior, and the second layer distinguishes
+between ASD and non-ASD. In each of the layers, we use a unique rater weighting scheme to aggregate
+classification scores from different raters based on their expertise. We also determine Shapley values for
+the most important features in the classifier to understand how the classifiers’ process aligns with clinical
+intuition.
+
+Results
+
+Using these techniques, we achieved an accuracy (area under the curve [AUC]) of 76% (SD 3%) and
+sensitivity of 76% (SD 4%) for identifying atypical children from among developmentally delayed
+children, and an accuracy (AUC) of 85% (SD 5%) and sensitivity of 76% (SD 6%) for identifying children
+with ASD from those predicted to have other developmental delays.
+
+Conclusions
+
+These results show promise for using a mobile video-based and machine learning—directed approach for
+early and remote detection of autism in Bangladeshi children. This strategy could provide important
+resources for developmental health in developing countries with few clinical resources for diagnosis,
+helping children get access to care at an early age. Future research aimed at extending the application of
+this approach to identify a range of other conditions and determine the population-level burden of
+developmental disabilities and impairments will be of high value.
+
+Keywords: autism, autism spectrum disorder, machine learning, developmental delays, clinical resources,
+Bangladesh, Biomedical Data Science
+
+Introduction
+
+Autism spectrum disorder (ASD) is a heterogeneous developmental disorder that includes deficits in social
+communication, repetitive behaviors, and restrictive interests, all of which lead to significant social and
+occupational impairments throughout the lifespan. Autism is one of the fastest growing developmental
+disorders in the United States [1], affecting 1 in 59 children [2]. Although the global autism prevalence is
+largely unknown, the prevalence is estimated to be between 0.15% and 0.8% among children in developing
+countries such as Bangladesh, with a higher prevalence in urban centers (eg, 3% in Dhaka) [3]. These
+numbers only represent a fraction of the actual cases, as most cases in semiurban and rural areas go
+unnoticed due to a dearth of resources. The disparity between urban and rural prevalence may reflect
+poorly understood risk factors or clinical resources in high-income areas along with higher awareness
+among urban parents about developmental delays [4]. More accessible and wide-scale screening is needed
+to accurately estimate ASD prevalence in remote parts of Bangladesh and other countries.
+
+The current models for diagnosing autism in Bangladesh, as in the United States, are often administered by
+trained clinical professionals using standard assessments [5]. Empirically validated diagnostic tools like
+the Autism Diagnostic Observation Schedule (ADOS) [6] and Autism Diagnostic Interview (ADI-R) [7]
+are not always used in different countries, particularly in developing countries, as these tools are
+expensive, require trained clinicians to administer, and may be limited by available translations and
+cultural adaptations [4]. For countries with limited ASD resources like Bangladesh, obtaining a diagnosis,
+which is essential for receiving an intervention and improving outcomes, is difficult. There is a pressing
+need to further develop open-source tools that do not require extensive training and professional
+certification and have high cross-cultural validity for autism screening globally [4]. Previous work has
+shown the feasibility and efficacy of assessing developmental delay using rapid assessment tools delivered
+
+11/8/21, 9:03 PM Detecting Developmental Delay and Autism Through Machine Learning Models Using Home Videos of Bangladeshi Children:...
+
+by professionals with limited clinical expertise in the home [5]. There is potential to extend the reach of
+assessment tools and decrease health care disparity, especially in developing and rural countries, by using
+machine learning and mobile technologies.
+
+In our previous works, we have developed tools for rapid mobile detection of ASD in short home videos of
+US children by using supervised machine learning approaches to identify minimal sets of behaviors that
+align with clinical diagnoses of ASD [8-15]. Features extracted in our minimally viable classifiers are
+accurately labeled by nonexpert raters (ie, noncertified clinical practitioners) in a short period of time (eg,
+<6 minutes). These labeled features can then be fed into our machine learning classifiers to determine the
+child’s autism risk. Tariq et al [14] used a dataset consisting of 162 videos (116 ASD, 46 neurotypical
+development [TD]) of US children to validate these classifiers. The top-performing classifier exhibited an
+accuracy of 92% (95% CI 88%-97%).
+
+Additionally, an independent validation set consisting of 66 videos (33 ASD, 33 TD) was labeled by a
+separate set of video raters in order to validate the results. The top-performing classifier maintained similar
+results, achieving an overall accuracy of 89% (95% CI 81%-95%).
+
+The current study aimed to show generalizability of video-based machine learning procedures for ASD
+detection that have established validity among US-based children [14] in Bangladesh. Specifically, our
+study aimed to determine the performance and accuracy of this same video machine learning procedures
+on videos of Bangladeshi children under the age of 4 years. This sample was drawn from a population
+diagnosed with ASD and another population with other speech and language conditions (SLCs), but not
+ASD. Additionally, we compared the features that are most important for accurate classification of children
+from Bangladesh and created several machine learning models that can be generalized to different cultures.
+
+Methods
+
+Data Collection
+
+The study received ethical clearance under Dr Naila Khan from the Bangladesh Institute of Child Health,
+Dhaka Shishu Children’s Hospital (DSH) and the Stanford University Institutional Review Board. We
+aimed to recruit 150 children for this study: 50 with ASD, 50 with an SLC, and 50 with neurotypical
+development (TD). All participants were recruited after they provided consent (in Bengali language) for
+participation at the DSH, and their children were screened for the presence of ASD or SLC. Participants
+were enrolled if they were parents above 18 years of age, had a child between the ages of 18 months and 4
+years, could attend an appointment at the DSH to complete the study procedures, and were willing to
+submit a brief video of their child to the study team. Enrolled families provided demographic information
+(see 
+
+Brief videos (2-5 minutes) were recorded during evaluation of the children who presented to the Child
+Development Center of the Bangladesh Institute of Child Health with neurodevelopmental concerns. We
+administered the Modified Checklist for Autism in Toddlers (Bangla version [16]) to all children to
+identify the presence of ASD, and all children underwent additional clinical evaluations by a
+developmental psychologist and a child health physician in order diagnose ASD, SLC, or TD, as described
+previously [5]. We also administered the ADOS for 28 of the 50 children identified with ASD; ADOS
+could not be completed in the remaining 22 children diagnosed with ASD because their families were
+unable to commit to the time required to complete the assessment, a common problem for families in low-
+resource areas [4].
+
+Acquired videos and supporting demographic measures were securely sent from DSH to Stanford
+University. Videos were assessed for quality by trained clinical researchers at Stanford University. Criteria
+included video, sound, and image quality in addition to video length and content (ie, ensuring that the
+video was long enough to answer necessary questions, that the child was present in the video, etc).
+Furthermore, videos were assessed to meet the following criteria: (1) it captured the child’s face and hands,
+(2) it involved social interaction or attempts of social interaction, and (3) it involved an interaction
+between the child and a toy/object.
+
+Video Raters
+
+11/8/21, 9:03 PM Detecting Developmental Delay and Autism Through Machine Learning Models Using Home Videos of Bangladeshi Children:...
+
+Nine non-Bengali speaking US-based raters with no clinical training used a secure, HIPAA (Health
+Insurance Portability and Accountability Act)-compliant online website to watch the videos and answer a
+set of 31 multiple-choice questions corresponding to the behavioral features of autism [14]. Each rater
+completed a 1-hour training session with a senior analyst before scoring the videos. Senior analysts
+conducted rater quality checks by comparing a subset of 10 video scores to “gold standard” scores. These
+“gold standard” scores were agreed upon by two clinical research coordinators who each had several years
+of experience with children with autism.
+
+Source Classifiers Trained on Clinical Data for Reduce-to-Practice Testing
+
+We assembled eight published machine learning classifiers to test their viability for use in the rapid mobile
+detection of autism through the use of short home videos of US children [14]. For all eight models, the
+source of training and validation data was item-level medical records of US children, which contained
+either the ADOS or ADI-R outcome data on all participants. The ADOS has several modules containing
+approximately 30 features that correspond to the developmental level of the individual under assessment.
+These features are assessed based on how a child interacts with a clinical practitioner administering the
+exam. The ADI-R is a parent-directed interview that includes >90 elements asked of the parent, with
+multiple choices for answers. Each model was trained on item-level outcomes from the administration of
+either the ADOS or ADI-R and optimized for accuracy, sparsity of features, and interpretability in previous
+publications [8-15]. All these classifiers have been validated with US home videos (total: n=162, ASD:
+n=116, non-ASD: n=46) [14]. The top three performing classifiers in this dataset were chosen for
+validation of the videos collected from DSH in Bangladesh to test the accuracies of these models across
+cultures.
+
+Stacked Classifiers With Rater-Adaptive Weighting
+
+In an effort to improve the results on the Bangladeshi dataset after attempting to validate previously built
+classifiers on these data, we constructed new classifiers while controlling for potential noise resulting from
+inaccurate ratings and constructed separate layers for each step of the classification for a streamlined
+approach. Our dataset contained three classes—TD, ASD, and SLC—assigned by screening via clinical
+evaluation at the DSH [5]. By implementing a layered approach to classification—first distinguishing
+general developmental delays (including ASD and SLC) from TD and then distinguishing ASD from SLCs
+—we were able to broaden the detection capabilities to more generally classify the presence of other
+developmental delays in addition to ASD specifically.
+
+Rater Weighting Given the raters’ lack of formal clinical training, we hypothesized that some raters might
+be more adept at identifying certain risk factors in some videos than others. Regardless of whether these
+interrater differences in identification accuracy for certain subsets of behaviors arise naturally or by
+chance, we hypothesized that this heterogeneous rater performance could be leveraged to yield increased
+model performance. For example, if one rater is especially capable of labeling a child’s level of eye contact
+and another rater does a poor job of rating eye contact but excels at rating language ability, then a model
+trained on each individual rater’s labels alone might perform poorly; however, an ensemble that considers
+the outputs of both rater’s models could perform substantially better. Achieving this improved performance
+is the focus of our proposed novel rater-adaptive weighting scheme.
+
+For each of the three raters in the dataset, we trained a Random Forest classifier to predict a child’s class
+label (TD, SLC, or ASD) based on the rater’s annotations of that child’s behavior in a given video. The
+Random Forest classifier adapts to each rater’s expertise and labeling patterns; a basic analysis revealed
+that each rater had a different feature set that they rated well. In addition to (and, in part, because of)
+interrater differences in the labeling ability, each rater’s model had varying levels of accuracy. We wanted
+the ensemble to weigh the predictions from the most accurate rater models more heavily. Therefore, we
+first trained and calculated the accuracy of each rater’s model relative to a majority vote baseline and then
+used that difference to up- or downweigh that rater’s vote relative to the other raters’ votes.
+
+Specifically, we let z; represent the difference in accuracy of rater j ’s model relative to the majority vote
+baseline. Then, after calculating z; for each rater j=1, 2...K, we pass these values into the softmax function
+to generate rater-specific weights:
+
+11/8/21, 9:03 PM Detecting Developmental Delay and Autism Through Machine Learning Models Using Home Videos of Bangladeshi Children:...
+
+This ensures that all the raters’ weights collectively sum up to 1, so that the ensemble prediction will be a
+linear combination of each rater’s predictions. Using these weights, the final ensemble prediction for child
+iis calculated by multiplying each rater model’s predicted probability for the target class (eg, atypical
+development or ASD) by the corresponding rater-specific weight and adding the weighted raters’ predicted
+probabilities together. More specific details can be found in Multimedia

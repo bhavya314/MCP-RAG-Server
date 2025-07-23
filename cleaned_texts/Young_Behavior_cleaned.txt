@@ -1,0 +1,147 @@
+Abstract
+Background: Signs of autism are present in the first two years of life, but the average age of 
+diagnosis lags far behind. Instruments that improve detection of autism risk in infancy are needed. 
+This study developed and tested the psychometric properties of a novel video-based approach to 
+detecting ASD in infancy.
+Methods: A prospective longitudinal study of children at elevated or lower risk for autism 
+spectrum disorder was conducted. Participants were 76 infants with an older sibling with ASD and 
+37 infants with no known family history of autism. The Video-referenced Infant Rating System for 
+Autism (VIRSA) is a web-based application that presents pairs of videos of parents and infants 
+playing together and requires forced-choice judgments of which video is most similar to the child 
+being rated. Parents rated participants on the VIRSA at 6, 9, 12, and 18 months of age. We 
+examined split-half and test-retest reliability; convergent and discriminant validity; and sensitivity, 
+specificity, and negative and positive predictive value for concurrent and 36-month ASD 
+diagnoses.
+Results: The VIRSA demonstrated satisfactory reliability and convergent and discriminant 
+validity. VIRSA ratings were significantly lower for children ultimately diagnosed with ASD than 
+children with typical development by 12 months of age. VIRSA scores at 18 months identified all 
+children diagnosed with ASD at that age, as well as 78% of children diagnosed at 36 months.
+Conclusions: This study represents an initial step in the development of a novel video-based 
+approach to detection of ASD in infancy. The VIRSA’s psychometric properties were promising 
+when used by parents with an older affected child, but still must be tested in community samples 
+with no family history of ASD. If results are replicated, then the VIRSA’s low-burden, web-based 
+format has the potential to reduce disparities in communities with limited access to screening.
+Keywords
+Autism; Screening; Infancy; Social Development
+Correspondence: Sally Ozonoff, MIND Institute, UC Davis Health, 2825 50th Street, Sacramento CA 95817; 916-703-0259; 
+ 
+HHS Public Access
+Author manuscript
+J Child Psychol Psychiatry. Published in final edited form as:
+J Child Psychol Psychiatry. 2020 January ; 61(1): 88–94. 
+Author Manuscript
+
+Introduction
+The developmental course of autism spectrum disorder (ASD) involves the onset of 
+symptoms in the first three years of life. Differences between children who will later receive 
+an ASD diagnosis and those with typical development emerge before the second birthday 
+(; Landa & Garrett-Mayer, 2006; ; Zwaigenbaum et 
+al., 2005), with some studies documenting signs in the first year of life (; 
+; Werner, Dawson, Osterling & Dinno, 2000), and parents first expressing 
+concerns at an average age of 14 months (). Despite advances in 
+knowledge about the earliest presentations of ASD, the mean age of diagnosis has 
+stubbornly remained over 4 years () and has not declined over the last two 
+decades, squandering years of potential intervention when the brain is most plastic. It is 
+critical that further attempts are made to decrease the age of ASD diagnosis so that it better 
+aligns with the age of first symptom emergence.
+One of the identified barriers to more prompt recognition of ASD is measurement (Al 
+Qabandi, Gorter & Rosenbaum, 2011). Over the last decade, much effort has gone into the 
+development of instruments for earlier detection of ASD (). The 
+most feasible method for large-scale screening is parent report and most existing measures 
+use this methodology. However, recent studies have demonstrated low agreement between 
+parent report and more objective measures of ASD symptoms (), as well 
+as lower reliability for screening instruments when used in rural, low income, less educated, 
+and racially diverse samples (Khowaja, Hazzard & Robins, 2015; ). A 
+population screening study of 10,479 twelve-month-olds () using a parent-
+report measure (Wetherby, Brosnan-Maddox, Peace & Newton, 2008) identified 32 infants 
+with ASD. This represents significant under-identification, even after accounting for cases 
+with later onset (Barger, Campbell & McDonough, 2013), since current prevalence studies 
+estimate that 170 of 10,000 children have ASD ().
+The lower sensitivity of early screening measures may be due to the subtlety of initial ASD 
+symptoms and the difficulty of accurately conveying them to parents through written 
+descriptions. Major sources of error in parent questionnaires include comprehension and 
+interpretation problems (Koriat, Goldsmith & Pansky, 2000; Krosnick & Presser, 2010), 
+such as limited understanding of the queried constructs, inadequate knowledge of 
+developmental milestones, and bias due to post-event information (e.g., eventual diagnosis). 
+The current study moves beyond verbal descriptions by employing video examples to reduce 
+subjective interpretations. The use of videos has been shown to dramatically increase clarity 
+in other fields, from music instruction to motor vehicle repair (Arguel & Jamet, 2009). 
+Recently, video was incorporated in ASD screening by Marrus and colleagues (2015), who 
+had parents complete ratings after watching a video of a socially competent toddler, in order 
+to “reduce discrepant interpretations of items by providing informants with a common 
+naturalistic standard for comparison” (p. 1340).
+Here we describe the development of a new instrument, the Video-referenced Infant Rating 
+System for Autism (VIRSA). It extends previous approaches () by 
+Young et al.
+
+J Child Psychol Psychiatry. Author Manuscript
+Author Manuscript
+
+creating a large library of video clips depicting a wide range of social-communication ability 
+and relying solely on video in the ratings, with no written descriptions of behavior. We 
+hypothesized that the semantic clarity afforded by video would improve early discrimination 
+of infants at highest risk for ASD.
+Methods
+Instrument Development
+The VIRSA was developed using video from participants in a longitudinal infant sibling 
+study and then validated on an independent sample of infants. Videos used in the VIRSA 
+were drawn from an archive of over 300,000 minutes of digitized video recorded in a clinical 
+laboratory setting. Video depicted infants and parents playing together with age-appropriate 
+toys. Segments were selected from a task that used a standardized toy set and instructed 
+parents to play with their child as they would at home (Schwichtenberg, Kellerman, Miller, 
+Young & Ozonoff, 2019). Video recordings utilized a consistent camera angle facing the 
+child, with the parent in profile. All families gave both informed consent and legal 
+authorization to include their videos in the VIRSA.
+Social behaviors, including smiles, vocalizations, and eye contact, were coded by research 
+assistants unaware of participant risk group or outcome, using a previously validated coding 
+scheme that is sensitive to the changes that occur during the onset of ASD symptoms as 
+early as 6 months (; ). In order to include a broad 
+range of behaviors in the VIRSA, candidate videos were ranked by frequencies of the coded 
+behaviors. Twenty-second segments were then excised from the original video files, 
+resulting in a collection of over 3,000 video segments from 100 past participants between 6 
+and 18 months of age. Next, video segments were rated by 9 clinical research staff on a scale 
+from 1 (least socially competent) to 10 (most socially competent). Each clinician rated a 
+randomly selected set of 39 videos twice to establish test-retest reliability (mean=0.89, range 
+0.78–0.98). Inter-rater reliability was examined on a larger randomly selected set of 260 
+video clips rated by all raters using a two-way random ICC model. The average measures 
+ICC for absolute agreement was 0.92, with a lower bound of 0.86, suggesting strong inter-
+rater reliability of the 10-point scale. Video segments were excluded for poor lighting or 
+audio quality, obscured video angles, or use of the child’s name. This resulted in a pool of 
+video comprising 1,132 individual 20-second clips, which was then constrained to insure 
+adequate representation across the 10-point rating scale within each age (6, 9, 12, and 18 
+months). To limit the software overhead for the VIRSA app, 268 videos were then randomly 
+selected to create the final VIRSA video library. The final pool of video included segments 
+from 11 children with ASD, 23 children with non-ASD developmental concerns (e.g. 
+speech-language delays), and 29 children with typical development, based on 36-month 
+outcome (63 children total). Thirty-eight (60.32%) of the children depicted in VIRSA videos 
+were male and 43 (68.25%) were Non-Hispanic Caucasian. Analysis of ratings of VIRSA 
+videos, using a generalized linear model with random effects for subjects and age, revealed a 
+significant group effect (X2=6.76, df=2, p<.05), with the ASD videos rated an average of 
+4.18 (95% CI = 2.81 to 5.55), the videos of children with non-ASD developmental concerns 
+rated an average of 6.14 (95% CI = 5.19 to 7.09), and the videos of typically developing 
+Young et al.
+
+J Child Psychol Psychiatry. Author Manuscript
+Author Manuscript
+
+participants rated an average of 6.35 (95% CI = 5.47 to 7.22). Simple comparisons indicated 
+that the ratings of the ASD videos differed significantly from the videos of both the non-
+ASD developmental concerns (t=2.31, p=.027) and typically developing cases (t=2.62, p=.
+013), who did not differ from one another (t=0.31, p=0.76), as expected. Since the VIRSA 
+was designed specifically to detect the social-communication behaviors relevant to ASD, but 
+not broader developmental delays, this pattern of results provided further validation of the 
+final video pool.
+The library of video segments was incorporated into a web-based application that presented 
+pairs of videos, depicting differing degrees of social competence, side by side, accompanied 
+by the prompt, “Which video is more like your child’s interaction with you on a typical 
+day?” On each trial, the video on the left played automatically, followed by the video on the 
+right, at which point the viewer selected the one most like the child. Presentation of video 
+followed an algorithm that always began with a pair of videos rated as 3 (less social) and 8 
+(more social) on the 10-point scale. After each choice, the algorithm selected and displayed 
+a second pair of videos with new scale values contingent upon the previously chosen video’s 
+ranking. In each subsequent trial, the viewer’s video choice dictated the range of sociability 
+represented in the videos on the next trial, analogous to how optometrists help patients select 
+eyeglass prescriptions. In this way, the algorithm presented videos of increasing similarity 
+over subsequent trials until the distance between videos reduced to 1 rating scale point on 2 
+subsequent trials, at which point the average rating of the last 2 trials was recorded as the 
+final score (see Figure S1 in online

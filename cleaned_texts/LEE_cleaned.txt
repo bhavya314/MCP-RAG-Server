@@ -1,0 +1,564 @@
+Abstract: Autism spectrum disorder (ASD) is a developmental disorder with a life-span disability.
+While diagnostic instruments have been developed and qualiﬁed based on the accuracy of the
+discrimination of children with ASD from typical development (TD) children, the stability of such
+procedures can be disrupted by limitations pertaining to time expenses and the subjectivity of
+clinicians. Consequently, automated diagnostic methods have been developed for acquiring objective
+measures of autism, and in various ﬁelds of research, vocal characteristics have not only been reported
+as distinctive characteristics by clinicians, but have also shown promising performance in several
+studies utilizing deep learning models based on the automated discrimination of children with
+ASD from children with TD. However, diﬃculties still exist in terms of the characteristics of the
+data, the complexity of the analysis, and the lack of arranged data caused by the low accessibility
+for diagnosis and the need to secure anonymity. In order to address these issues, we introduce
+a pre-trained feature extraction auto-encoder model and a joint optimization scheme, which can
+achieve robustness for widely distributed and unreﬁned data using a deep-learning-based method
+for the detection of autism that utilizes various models. By adopting this auto-encoder-based
+feature extraction and joint optimization in the extended version of the Geneva minimalistic acoustic
+parameter set (eGeMAPS) speech feature data set, we acquire improved performance in the detection
+of ASD in infants compared to the raw data set.
+Keywords: auto-encoder; bidirectional long short-term memory (BLSTM); joint optimization; acoustic
+feature extraction; autism spectrum disorder
+1. Introduction
+Autism spectrum disorder (ASD) is a developmental disorder with a high probability of causing
+diﬃculties in social interactions with other people [1]. According to the Diagnostic and Statistical
+Manual of Mental Disorders, Fifth Edition (DSM-5), ASD involves several characteristics such as being
+conﬁned to speciﬁc interests or behaviors, delayed linguistic development, and poor functionality in
+terms of communicating or functioning in social situations [2]. As there is wide variation in terms of
+the types and severities of ASD based on its characteristics, the disorder is referred to as a spectrum [1].
+Not only does ASD have the characteristics of a developmental disorder with a life-span disability, but
+its prevalence is also increasing—from 1 in 150 children in 2000 to 1 in 54 children in 2016 [3]. As diverse
+evidence has been obtained from previous research showing that the chance of improvement in the
+Sensors 2020, 20, 6762; 
+
+Sensors 2020, 20, 6762
+2 of 11
+social abilities of people with ASD increases when an earlier clinical intervention is performed [4], the
+early detection of ASD characteristics has become a key point of current ASD research.
+Various instruments for discriminating ASD have been developed, and the commonly accepted
+gold standard schemes are behavioral assessments, which are time-consuming procedures and require
+multidisciplinary teams (MDTs). However, most behavioral assessments suﬀer in terms of the stability
+of their ASD diagnosis as a result of the issues of accessibility or subjectivity and interpretive bias
+between professions [5]. Therefore, several attempts to develop objective and precise diagnostic
+methods have been made in multiple ﬁelds, such as genetic determination [6], principle analysis of
+brain images [7], and physiological approaches [8].
+One prominent area of behavioral observations is that of infants’ vocal characteristics. Children
+with ASD are known to have abnormalities in their prosody resulting from deﬁcits in their ability to
+recognize the inherent mental conditions of others [9], and their atypical vocalizations are known to be
+monotonous or exaggerated, which can be revealed using various acoustic characteristics, followed
+by engineering approaches for the discrimination of ASD or typical development (TD) in children
+based on the vocal and acoustic features. For example, in [10], the researchers estimated deﬁcits in the
+vocalization of children with ASD at an average age of 18 months, such as “ﬂat” intonation, atypical
+pitch, or control of volume based on the variability of pitch and the long-term average spectrum
+(LTAS) using fast Fourier transform, where signiﬁcant diﬀerences were observed in the spectral
+components at low-band frequencies, as well as spectral peaks and larger pitch ranges and standard
+deviations. The development of linguistic abilities is also considered to be a distinguishable feature of
+delayed development in children with ASD. Earlier vocal patterns at age 6–18 months were proven
+to be diﬀerentiable in a study [11] that aimed to conﬁrm the hypothetical vocal patterns and social
+quality of vocal behavior in order to diﬀerentiate between ASD and TD cohorts in groups of children
+aged 0–6, 6–12, and 12–18 months in terms of categorized speech patterns consisting of vocalization,
+long reduplicated babbling, two-syllable babbling, and ﬁrst words. Evidence of abnormalities in
+children with ASD were shown, in these cases, as a signiﬁcant decrease in vocalization and ﬁrst word
+rate, while the diﬀerence in babbling ability between children with ASD and TD was negligible.
+Given the development and improvement of machine learning algorithms, as the achievement
+in the performance of state-of-the-art classiﬁcation and discrimination tasks [12], recent attempts to
+develop automated classiﬁcation methods based on machine learning techniques have been based
+on the distinctiveness of vocal characteristics, and have been shown to be promising alternatives to
+the conventional methods in many publications [13]. For examples of machine learning classiﬁcation,
+the researchers of [14] employed various acoustic–prosodic features, including fundamental frequency,
+formant frequencies, harmonics, and root mean square signal energy. In their research, support vector
+machines (SVMs) and probabilistic neural networks (PNNs) were adopted as classiﬁers, which showed
+eﬀectual accuracy in discriminating children with ASD from children with TD. Meanwhile, the authors
+of [15] employed more recent deep learning techniques, such as convolutional neural networks (CNNs)
+and recurrent neural networks (RNNs) with spectral features from short-time Fourier transform (STFT)
+and constant Q transform (CQT), to classify children diagnosed using the autism diagnostic observation
+schedule (ADOS), also showing promising results in multiple outcomes from SVMs, RNNs, and a
+combination of CNN and RNN classiﬁers.
+A generalized acoustic feature set, an extended version of the Geneva minimalistic acoustic
+parameter set (eGeMAPS) [16], and the bidirectional long short-term memory (BLSTM) model were
+adopted to diﬀerentiate between children with ASD and children with TD in [17], showing that 75% of
+the subjects’ utterances were correctly classiﬁed with the simple application of a deep learning model
+and feature sets. While the quality of previous research based on various acoustic features has proven
+the eﬀectiveness of acoustic features and classiﬁcation algorithms for the detection of abnormalities in
+children’s voices in ASD group compared to those of TD group, the complexity and relationship being
+inherent between the features will remain uncertain until a large amount of data can be accumulated.
+Furthermore, a limitation still remains in terms of the problems regarding data collection, since there are
+
+Sensors 2020, 20, 6762
+3 of 11
+diﬃculties pertaining to the need to secure the anonymity of infant subjects, as well as the unintended
+ignorance of parents at earlier stages of their infant’s development. The data of infants are, accordingly,
+dispersed by gender, age, and number of vocalizations, or consist of comparably small volumes of
+audio engineering data in general. These problems were typically overlooked by previous research
+with controlled and small amounts of data.
+In order to provide suggestions for a method to overcome the abovementioned restrictions, we focus
+on examining the feasibility of neural networks as a feature extractor, employing an auto-encoder (AE),
+which can modify acoustic features into lowered and separable feature dimensions [18]. We construct a
+simple six-layered stacked AE that contains an input layer, three fully connected (FC) layers, an output
+layer, and one auxiliary output layer, which has categorical targets for ASD and TD for the optimization
+of the latent feature space of the AE. We train the AE and deep learning models and compare the
+results for each model based on SVMs and vanilla BLSTM, while adopting the same model parameters
+from the method suggested in [17].
+The remainder of this paper is organized as follows. Section 2 describes the speciﬁcations of the
+participants’ data, data processing, feature extraction, statistical analysis, and experimental setup.
+Section 3 presents the performance evaluations for each algorithm of the SVMs and vanilla BLSTM.
+Lastly, Section 4 concludes the paper.
+2. Proposed Method
+2.1. Data Collection and Acoustic Feature Extraction
+This study was based on the audio data from video recordings of ASD diagnoses, which were
+collected from 2016 to 2018 at Seoul National University Bundang Hospital (SNUBH). We received
+approval from the Institutional Review Board (IRB) at SNUBH to use fully anonymized data for
+retrospective analysis (IRB no: B-1909/567-110) from existing research (IRB no: B-1607/353-005).
+We collected the audio data of 39 infants who were assessed using seven multiple instruments,
+consisting of (1) ADOS, second edition (ADOS-2), (2) the autism diagnostic interview, revised (ADI-R),
+(3) the behavior development screening for toddlers interview (BeDevel-I), (4) the behavior development
+screening for toddlers play (BeDevel-P), (5) the Korean version of the childhood autism rating scale
+(K-CARS) reﬁned from CARS-2, (6) the social communication questionnaire (SCQ), and (7) the social
+responsiveness scale (SRS) [19–22]. The ﬁnal diagnosis was based on the best clinical estimate diagnosis
+according to the DSM-5 ASD criteria by a licensed child psychiatrist using all of the available participant
+information. The participants’ ages ranged between 6 and 24 months, where the average age was
+19.20 months with a standard deviation (SD) of 2.52 months. Note here that the age means the age
+at the time when each infant visited the hospital to undergo an initial diagnosis examination. There
+were four males and six females diagnosed with ASD, whose average age was 14.72 months with a
+SD of 2.45. The remaining participants consisted of TD children (19 males and 10 females). 
+displays the collected data distribution, while 
+from the infants.
+
+Ages (Month)
+No. of Subjects
+Diagnosed as ASD
+No. of Subjects
+Diagnosed as TD
+No. of Infant Subjects
+6–12 months
+5 M/1 F
+12–18 months
+1 M/3 F
+14 M/9 F
+15 M/12 F
+18–24 months
+3 M/3 F
+Age (average ± SD)
+
+Sensors 2020, 20, 6762
+4 of 11
+
+in 
+Infant ID
+Age (Months) on
+Initial Diagnosis
+Date
+Gender
+Initial Diagnosis
+Date
+(Year/Month/Day)
+Deﬁnite Final
+Diagnosis Date
+(Year/Month/Day)
+ASD/TD
+Male
+TD
+Male
+TD
+Male
+TD
+Male
+TD
+Female
+ASD
+Male
+TD
+Female
+TD
+Female
+TD
+Male
+TD
+Male
+TD
+Female
+ASD
+Female
+TD
+Male
+TD
+Female
+ASD
+Male
+TD
+Female
+ASD
+Male
+ASD
+Male
+ASD
+Female
+TD
+Male
+TD
+Female
+TD
+Male
+ASD
+Male
+ASD
+Female
+TD
+Male
+TD
+Male
+TD
+Female
+TD
+Male
+ASD
+Male
+TD
+Male
+TD
+Male
+TD
+Male
+TD
+Male
+TD
+Female
+TD
+Female
+TD
+Male
+TD
+Male
+ASD
+Male
+TD
+Male
+TD
+As each infant’s audio data were recorded during the clinical procedure to elicit behaviors from
+infants, with the attendance of one doctor or clinician and one or both parents with the child in the
+clinical area, the audio components consisted of various speeches from the child, the clinician, and the
+parent(s), as well as noises from toys or dragging chairs. Note here that the recordings were done in one
+of two typical clinical rooms in SNUBH, where the room dimensions were 365 cm × 400 cm × 270 cm
+and 350 cm × 350 cm × 270 cm, and the hospital noise level was around 40 dB. In order to analyze
+the vocal characteristics of the infants, each audio clip was processed and split into audio segments
+containing the infant’s voice, not disturbed by music or clattering noises from toys or overlapped
+by the voices of the clinician or parent(s). Each segment was classiﬁed into one of ﬁve categories,
+labeled from 0 to 4, for measuring the data distribution. Each label was intended to show diﬀerentiable
+characteristics relative to the children’s linguistic development: (1) 0 for one syllable, which is a short,
+
+Sensors 2020, 20, 6762
+5 of 11
+momentary single vocalization such as “ah” or “ba”; (2) 1 for two syllables, commonly denoted as
+canonical babbling, as a reduplication of clear babbling of two identical or variant syllables such as
+“baba” or “baga”; (3) 2 for babbling, not containing syllables; (4) 3 for ﬁrst word, such as “mother” or
+“father”; and (5) 4 for atypical voice, including screaming or crying. The distribution of each type of
+vocalization in seconds is shown in 
+along with a rational value considering the diﬀerence between the ASD and TD groups. While the
+data were unbalanced and very small, the distribution of ASD and TD vocalizations show the same
+tendency as reported in [10], where the ASD group showed a signiﬁcantly lower ratio of ﬁrst words
+and an increased ratio of atypical vocalizations, revealing developmental delay in linguistic ability.
+
+Vocal Label
+ASD
+TD
+Total
+For acquiring qualiﬁed and eﬀective feature sets for the vocal data, eGeMAPS was employed
+for voice feature extraction. GeMAPS is a popular feature set providing minimalistic speech features
+generally utilized for automatic voice analysis rather than as a large brute force parameter set. As an
+extended version, eGeMAPS contains 88 acoustic features that were fully utilized in this experiment.
+Each recorded set of audio data stored as a 48 kHz stereo ﬁle was down-sampled and down-mixed into a
+16 kHz mono-audio ﬁle, taking into consideration its usability and resolution in mel-frequency cepstral
+coeﬃcients (MFCCs). To extract the speech features for ASD classiﬁcation, each infant’s utterances
+were segmented into 25 ms frames with a 10 ms overlap between frames. Then, 88 diﬀerent features of
+the eGeMAPS were extracted for each frame with open source speech and music interpretation using
+the large-space extraction (OpenSMILE) toolkit [23], and these features were normalized by mean and
+standard deviation. The normalization scaling was acquired and ﬁxed by normalizing the factors of
+the training data set. The features were grouped for each ﬁve frames considering the time-relevant
+characteristics of the speech data.
+2.2. Pre-Trained AE for Acoustic Features
+To further process and reﬁne the acoustic data, a feature-extracting AE was introduced. An AE is a
+hierarchical structure that is trained as a regression model for reproducing the input parameters. The AE
+takes inputs and converts them into latent representations, and then reconstructs the input parameters
+from the latent values [24]. If we consider an input of AE, x ∈ Rd, then the latent representation z ∈ Rd′
+and the reconstruction of the input y ∈ Rd are obtained by applying a nonlinear activation function
+f to the weight sum of z using a weighting matrix W ∈ Rd×d′ and a bias vector b ∈ Rd′, such as
+z = f
+�
+WTx + b
+�
+(1)
+y = f
+�
+WTz + b′�
+(2)
+where T is a matrix transpose operator. When the latent dimension d′ < d, the output from the latent
+layer is considered to be a compressed, meaningful value extracted from the input, which is also noted
+as a bottleneck feature [25].
+The normalized eGeMAPS features were applied to train the feature-extracting AE, applying
+the same data as the input and the target. The AE model contained a latent layer with a lowered,
+compacted feature dimension compared to the input layer to achieve the useful bottleneck feature.
+
+Sensors 2020, 20, 6762
+6 of 11
+The model was symmetrically structured, centering around the latent layer, and the model could be
+divided into two components: the encoder, consisting of layers from the input to the latent layers,
+and a decoder, consisting of layers from the bottleneck to the output layers.
+The AE structure is depicted in 
+of 88, 70, 54, 70, and 88 nodes for the input, hidden, latent, hidden, and output layers, respectively.
+The hidden dimension was selected experimentally and the bottleneck feature dimension was used for
+comparison with previous research [17], where 54 features were selected considering the statistical
+dissimilarity of the distributions between the ASD and TD features based on the Mann–Whitney U
+test [26]. We additionally introduced an auxiliary output as the binary categorical target for ASD
+and TD, which is known as the semi-supervised method, to train the AE model eﬀectively [27]. The
+auxiliary output is depicted as Aux in 
+can be written as
+zi = f(Wi−1,izi−1 + bi−1,i)
+(3)
+where z1 = f(W0,1x + b0,1), and
+yrec = W3,4z3 + b3,4
+(4)
+yaux = ∂(W2,az2 + b2,a)
+(5)
+where yrec refers to the reconstructed eGeMAPS features, yaux is the auxiliary classiﬁcation result, f is
+the activation function, and ∂ is the softmax activation.
+ 
+layer is considered to be a compressed, meaningful value extracted from the input, which is also 
+noted as a bottleneck feature [25]. 
+The normalized eGeMAPS features were applied to train the feature-extracting AE, applying the 
+same data as the input and the target. The AE model contained a latent layer with a lowered, 
+compacted feature dimension compared to the input layer to achieve the useful bottleneck feature. 
+The model was symmetrically structured, centering around the latent layer, and the model could be 
+divided into two components: the encoder, consisting of layers from the input to the latent layers, 
+and a decoder, consisting of layers from the bottleneck to the output layers. 
+The AE structure is depicted in 
+dimensions of 88, 70, 54, 70, and 88 nodes for the input, hidden, latent, hidden, and output layers, 
+respectively. The hidden dimension was selected experimentally and the bottleneck feature 
+dimension was used for comparison with previous research [17], where 54 features were selected 
+considering the statistical dissimilarity of the distributions between the ASD and TD features based 
+on the Mann–Whitney U test [26]. We additionally introduced an auxiliary output as the binary 
+categorical target for ASD and TD, which is known as the semi-supervised method, to train the AE 
+model effectively [27]. The auxiliary output is depicted as Aux in 
+and auxiliary classification can be written as 
+𝒛𝑖 = 𝑓(𝑾𝑖−1,𝑖𝒛𝑖−1 + 𝒃𝑖−1,𝑖) 
+(3) 
+where 𝒛1 = 𝑓(𝑾0,1𝒙 + 𝒃0,1), and 
+𝒚𝑟𝑒𝑐 = 𝑾3,4𝒛3 + 𝒃3,4 
+(4) 
+ 𝒚𝑎𝑢𝑥 = 𝜕(𝑾2,𝑎𝒛2 + 𝒃2,𝑎) 
+(5) 
+where 𝒚𝑟𝑒𝑐 refers to the reconstructed eGeMAPS features, 𝒚𝑎𝑢𝑥 is the auxiliary classification result, 
+𝑓 is the activation function, and 𝜕 is the softmax activation. 
+ 
+the Geneva minimalistic acoustic parameter set; ASD, autism spectrum disorder; TD, typical 
+development. 
+The losses of the reconstruction error for main AE target are measured using the mean absolute 
+error, while the auxiliary ASD/TD target loss is the binary cross-entropy, and they are added and 
+simultaneously optimized with rational hyper-parameters. The overall loss equation is 
+
+Geneva minimalistic acoustic parameter set; ASD, autism spectrum disorder; TD, typical development.
+The losses of the reconstruction error for main AE target are measured using the mean absolute
+error, while the auxiliary ASD/TD target loss is the binary cross-entropy, and they are added and
+simultaneously optimized with rational hyper-parameters. The overall loss equation is
+Lrecon = 1
+N
+�
+i=1
+���yirec − yigt
+���
+(6)
+Laux = −y1gt log(y1aux) − (1 − t)y1gt log(y1aux)
+(7)
+Ltotal = Lrecon + αLaux
+(8)
+where Lrecon, Laux, and Ltotal denote the reconstruction error, auxiliary loss using a binary cross-entropy
+loss function, and total loss, respectively.
+
+Sensors 2020, 20, 6762
+7 of 11
+For our stacked AE model, a rational value of α = 0.3 was selected experimentally, considering
+the proportion of each loss. In order to train the AE eﬀectively, both L2 normalization for weight
+normalization and batch normalization were adopted [28,29]. After the training was completed,
+we fetched the encoder of the AE as the feature extraction part for the joint optimization model in the
+training procedures of the deep learning model.
+2.3. Establishing and Training the Deep Learning Model for ASD Detection
+As the eGeMAPS data were set and the AE was trained through semi-supervised learning,
+the machine learning models, such as SVMs, BLSTM, and joint optimized BLSTM were constructed.
+Each model had its own input parameter dimensions and the same output targets as ASD and TD
+classiﬁcation labels. The eGeMAPS feature data were paired with the diagnostic results for the
+supervised learning of the neural network models. For the binary decision, ASD was labeled as
+a positive data point, with a label of (0, 1), while TD was labeled as a negative data point (1, 0).
+We composed four kinds of models with the paired data: SVMs with linear kernel, the vanilla BLSTM
+with 88 eGeMAPS features, the vanilla BLSTM with 54 eGeMAPS features, and the jointly optimized
+BLSTM layer with the AE. The joint optimization model is depicted in 
+prepared as the input with ﬁve sequential frames, i.e., the grouped eGeMAPS features in 
+the SVMs received a single frame parameter of 440 dimension which was ﬂattened from the original
+ﬁve input frames. For the deep learning models, batch normalization, rectangular linear unit (ReLU)
+activation, and dropout were applied for each layer, except for the output layer [30,31], and the
+adaptive momentum (ADAM) optimizer [32] was used to train the network. The training procedure
+was controlled by early stopping for minimizing the validation error with 100 epoch patience, while
+saving the best models for improvement of the validation loss by each epoch. Because the amount
+of speech data was relatively small for a deep learning model compared to the disparate ﬁeld of
+audio engineering, we grouped the data into ﬁve segments, while the test utterances were separated
+formerly, which were selected randomly for 10% of the total data, were evenly distributed across each
+vocalization type, and underwent ﬁve-fold cross-validation for training; then, the best-performing
+model was chosen. Our model was trained with the TensorFlow framework [33]. For comparison,
+an SVM model with linear kernel was trained with the same data split as the proposed deep learning
+model, and as well as the vanilla BLSTM suggested in [17], which has single BLSTM with eight cells.
+Sensors 2020, 20, x FOR PEER REVIEW 
+8 of 12 
+ 
+term memory (BLSTM). 
+3. Performance Evaluation 
+The performance of each method was evaluated through five-fold cross validation, where 95 
+average ASD utterances and 130 average TD utterances were proportionally distributed over five 
+cases of vocalizations for the generalized estimation of unconcentrated utterance data. The averaged 
+performances of the five validation splits of each model are described in 
+of the BLSTM were used as the features for training the BLSTM model, where eGeMAPS-88 denotes 
+88 features of eGeMAPS, eGeMAPS-54 denotes 54 features selected by the Mann–Whitney U test, and 
+AE-encoded denotes the joint optimized model. In the classification stage, one utterance was 
+d i
+th f
+i
+th d
+d th
+ft
+t
+t d t
+l
+i di
+d 1
+
+short-term memory (BLSTM).
+3. Performance Evaluation
+The performance of each method was evaluated through ﬁve-fold cross validation, where
+95 average ASD utterances and 130 average TD utterances were proportionally distributed over ﬁve
+
+Sensors 2020, 20, 6762
+8 of 11
+cases of vocalizations for the generalized estimation of unconcentrated utterance data. The averaged
+performances of the ﬁve validation splits of each model are described in 
+of the BLSTM were used as the features for training the BLSTM model, where eGeMAPS-88 denotes
+88 features of eGeMAPS, eGeMAPS-54 denotes 54 features selected by the Mann–Whitney U test,
+and AE-encoded denotes the joint optimized model. In the classiﬁcation stage, one utterance was
+processed in the frame-wise method and the softmax output was converted to class indices 0 and 1, and
+if the average of class indices of the frames was over 0.5, then the utterance was considered an ASD
+child’s utterance. The performances were scored with conventional measures, as well as unweighted
+average recall (UAR) and weighted average recall (WAR), chosen in the INTERSPEECH 2009 Emotion
+challenge, which considered imbalanced classes [34]. In the experiment, the SVM model showed very
+low precision, which was extremely biased toward the TD class. The BLSTM classiﬁer with 88 features
+of eGeMAPS and the AE model showed considerable quality in terms of classifying ASD and TD
+children, while the AE model showed only marginal improvement in correctly classifying children
+with ASD compared to eGeMAPS-88. The 54 selected features showed degraded quality compared to
+eGeMAPS-88, obtaining more biased results toward children with TD.
+
+features, 54 selected eGeMAPS features, and BLSTM with AE-encoded features.
+Models
+SVM
+BLSTM
+(eGeMAPS-54)
+BLSTM
+(eGeMAPS-88)
+BLSTM
+(AE-Encoded)
+Predicted To
+ASD
+TD
+ASD
+TD
+ASD
+TD
+ASD
+TD
+ASD
+TD
+Accuracy
+Precision
+Recall
+F1 score
+UAR
+UAR, unweighted average recall.
+4. Discussion
+The vanilla BLSTM model presented in [17] conducted discrimination on well-classiﬁed subjects
+with 10-month-old children and sorted 54 features from eGeMAPS that had a distinctive distribution
+between ASD and TD selected by the Mann–Whitney U test using the three-fold cross-validation
+method. However, because the diﬀerence in the data distribution failed to achieve the same eGeMAPS
+feature selection between the test and classiﬁcation results with the speciﬁed feature set presented
+herein, the application of an identical model structure and the adoption of the same feature domain
+will allow both approaches to be indirectly comparable.
+These results can be interpreted by the data distributions, and we performed t-stochastic neighbor
+embedding (t-SNE) analysis [35] on the training data set, which can nonlinearly squeeze the data
+dimension based on a machine learning algorithm. 
+two-dimensional scatter plot. In the ﬁgure, the eGeMAPS features from eGeMAPS-88 and eGeMAPS-54
+showed almost identical distribution, except for the amount of ASD outliers, which implies that the
+ASD and TD features in the eGeMAPS features show similar distributions in this experiment. As shown
+in [16], eGeMAPS includes temporal features that are relevant to vocalizations and utterances; thus, these
+features might cause confusion regarding the discrimination between ASD and TD. The AE-encoded
+features, however, showed a redistributed feature map with a more characteristic distribution compared
+to the eGeMAPS features. This is because the AE-encoded features were compressed into a bottleneck
+feature, which was derived by weighting the matrix, paying attention to the signiﬁcant parameters
+
+Sensors 2020, 20, 6762
+9 of 11
+while reducing the inﬂuence from the ambiguous parameters. While the joint optimization model
+achieved only marginally improved results compared to eGeMAPS-88, the distribution of the feature
+map would be more noticeable in improved feature extraction models, as well as more diﬀerentiable in
+complex models, although BLSTM with eight cells was employed for a comparison with conventional
+research in this experiment.
+ 
+distribution compared to the eGeMAPS features. This is because the AE-encoded features were 
+compressed into a bottleneck feature, which was derived by weighting the matrix, paying attention 
+to the significant parameters while reducing the influence from the ambiguous parameters. While the 
+joint optimization model achieved only marginally improved results compared to eGeMAPS-88, the 
+distribution of the feature map would be more noticeable in improved feature extraction models, as 
+well as more differentiable in complex models, although BLSTM with eight cells was employed for a 
+comparison with conventional research in this experiment. 
+While the overall performance scores were comparably low for general classification problems 
+on account of the subjectivity and complexity of problems, and the limitation in terms of the shortage 
+of data, the results of the jointly optimized model imply the possibility of deep-learning-based feature 
+extraction for the improvement of automated ASD/TD diagnosis under restricted circumstances. 
+
+(a) 
+(b) 
+(c) 
+
+processed by t-stochastic neighbor embedding (t-SNE). 
+5. Conclusions 
+In this paper, we conducted experiments for discovering the possibility of auto-encoder-based 
+feature extraction and a joint optimization method for the automated detection of atypicality in voices 
+of children with ASD during early developmental stages. Under the condition of an insufficient and 
+dispersed data set, the classification results were relatively poor in comparison to the general 
+classification tasks based on deep learning. Although our investigation used a limited number of 
+subjects and an unbalanced data set, the suggested auto-encoder-based feature extraction and joint 
+optimization method revealed the possibility of feature dimension and a slight improvement in 
+model-based diagnosis under such uncertain circumstances. 
+
+by t-stochastic neighbor embedding (t-SNE).
+While the overall performance scores were comparably low for general classiﬁcation problems on
+account of the subjectivity and complexity of problems, and the limitation in terms of the shortage of
+data, the results of the jointly optimized model imply the possibility of deep-learning-based feature
+extraction for the improvement of automated ASD/TD diagnosis under restricted circumstances.
+5. Conclusions
+In this paper, we conducted experiments for discovering the possibility of auto-encoder-based
+feature extraction and a joint optimization method for the automated detection of atypicality in voices
+of children with ASD during early developmental stages. Under the condition of an insuﬃcient
+and dispersed data set, the classiﬁcation results were relatively poor in comparison to the general
+classiﬁcation tasks based on deep learning. Although our investigation used a limited number of
+subjects and an unbalanced data set, the suggested auto-encoder-based feature extraction and joint
+optimization method revealed the possibility of feature dimension and a slight improvement in
+model-based diagnosis under such uncertain circumstances.
+In future work, we will focus on increasing the reliability of the proposed method by addition
+of a number of infants’ speech data, reﬁnement of the acoustic features, an auto-encoder for feature
+extraction, and better, deeper, and up-to-date model structures. This research can also be extended to
+children with the age of 3 or 4 who can speak several sentences. In this case, we will investigate the
+linguistic features, as well as acoustic features, such as we have done in this paper. In addition to ASD
+detection, this research can be applied to the detection of infants with development delays.
+Author Contributions: All authors discussed the contents of the manuscript. H.K.K. contributed to the research
+idea and the framework of this study; G.B. and H.J.Y. provided the database and helped with the discussion; J.H.L.
+performed the experiments; G.W.L. contributed to the data collection and pre-processing. All authors have read
+and agreed to the published version of the manuscript.
+Funding: This work was supported by the Institute of Information & communications Technology Planning &
+evaluation (IITP) grant funded by the Korea government (MSIT) (No. 2019-0-00330, Development of AI Technology
+for Early Screening of Infant/Child Autism Spectrum Disorders based on Cognition of the Psychological Behavior
+and Response).
+Conﬂicts of Interest: The authors declare no conﬂict of interest.
+
+Sensors 2020, 20, 6762
+10 of 11

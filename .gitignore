@@ -1,0 +1,17 @@
+# Virtual Environment
+.venv/
+.env
+venv/
+
+# Python Bytecode
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Testing file
+*.ipynb_checkpoints
+*.ipynb
+
+# Database
+chromadb/
